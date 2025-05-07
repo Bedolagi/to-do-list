@@ -17,11 +17,11 @@ func NewTask(n string, state bool) *Task {
 }
 
 func DisplayTasks() {
-	for key, v := range List {
-		if v.isComplited {
-			fmt.Println(strconv.Itoa(key+1) + " " + v.name + "✅")
+	for key := 0; key < len(List); key++ {
+		if List[key].isComplited {
+			fmt.Print("ID: " + strconv.Itoa(key+1) + " State: ✅\nDescription:\n" + List[key].name)
 		} else {
-			fmt.Println(strconv.Itoa(key+1) + " " + v.name + "❌")
+			fmt.Print("ID: " + strconv.Itoa(key+1) + " State: ❌\nDescription:\n" + List[key].name)
 		}
 	}
 }
