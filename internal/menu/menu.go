@@ -2,6 +2,9 @@ package menu
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
+	"runtime"
 	"to-do-list/internal/task"
 )
 
@@ -45,5 +48,16 @@ func Select() {
 		fmt.Println("Введите ID задачи:")
 		fmt.Scan(&idTask)
 		delete(task.List, idTask-1)
+	}
+}
+
+func ClearConsole() {
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	default:
+		fmt.Print("\033[H\033[2J")
 	}
 }

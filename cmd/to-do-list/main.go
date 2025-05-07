@@ -13,6 +13,7 @@ func main() {
 	menu.MenuInit()
 
 	for {
+		menu.ClearConsole()
 		task.DisplayTasks()
 		menu.DisplayMenu()
 
