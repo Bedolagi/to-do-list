@@ -2,6 +2,7 @@ package main
 
 import (
 	"to-do-list/internal/menu"
+	"to-do-list/internal/task"
 
 	"github.com/eiannone/keyboard"
 )
@@ -9,7 +10,9 @@ import (
 func main() {
 	keyboard.Open()
 	defer keyboard.Close()
-	menu.Init()
 
+	taskMng := task.NewTaskManager()
+
+	menu := menu.NewMenu(taskMng)
 	menu.Start()
 }
