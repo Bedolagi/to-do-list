@@ -1,10 +1,10 @@
 package task
 
 type Task struct {
-	Name      string
-	Completed bool
+	Description string
+	Completed   bool
 }
 
-func NewTask(name string) *Task {
-	return &Task{Name: name}
+func NewTask(description string) *Task {
+	return &Task{Description: description}
 }

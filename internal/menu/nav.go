@@ -1,18 +1,19 @@
 package menu
 
-func (m *Menu) Navigate(direction int) {
+func (menu *Menu) Navigate(direction int) {
 	switch direction {
 	case -1:
-		if m.choice > 0 {
-			m.choice--
+		if menu.choice > 0 {
+			menu.choice--
 		}
 	case 1:
-		if m.choice < len(m.items)-1 {
-			m.choice++
+		if menu.choice < len(menu.items)-1 {
+			menu.choice++
 		}
 	}
 }
 
-func (m *Menu) HandleSelection() {
-	m.items[m.choice].Handler(m.taskMgr)
+func (menu *Menu) HandleSelection() {
+	menu.items[menu.choice].Handler(menu.taskManager)
+	menu.taskManager.SaveTasks()
 }

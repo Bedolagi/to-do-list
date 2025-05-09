@@ -11,8 +11,8 @@ func main() {
 	keyboard.Open()
 	defer keyboard.Close()
 
-	taskMng := task.NewTaskManager()
+	taskManager := task.NewTaskManager()
 
-	menu := menu.NewMenu(taskMng)
+	menu := menu.NewMenu(taskManager)
 	menu.Start()
 }

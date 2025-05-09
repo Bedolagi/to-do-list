@@ -15,74 +15,101 @@ type MenuItem struct {
 }
 
 type Menu struct {
-	items   []MenuItem
-	choice  int
-	taskMgr *task.TaskManager
+	items       []MenuItem
+	choice      int
+	taskManager *task.TaskManager
 }
 
-func NewMenu(taskMgr *task.TaskManager) *Menu {
-	m := &Menu{
-		taskMgr: taskMgr,
+func NewMenu(taskManager *task.TaskManager) *Menu {
+	menu := &Menu{
+		taskManager: taskManager,
 	}
 
-	m.items = []MenuItem{
+	menu.items = []MenuItem{
 		{
 			Content: "1. Создать новую задачу",
-			Handler: m.createTask,
+			Handler: menu.createTask,
 		},
 		{
-			Content: "2. Отметить задачу",
-			Handler: m.toggleTask,
+			Content: "2. Изменение описания задачи",
+			Handler: menu.editTask,
 		},
 		{
-			Content: "3. Удалить задачу",
-			Handler: m.deleteTask,
+			Content: "3. Отметить задачу",
+			Handler: menu.toggleTask,
+		},
+		{
+			Content: "4. Удалить задачу",
+			Handler: menu.deleteTask,
+		},
+		{
+			Content: "5. Удалить все задачи",
+			Handler: menu.deleteAllTask,
 		},
 	}
 
-	return m
+	return menu
 }
 
-func (m *Menu) Start() error {
+func (menu *Menu) Start() error {
 	for {
 		ClearConsole()
-		m.taskMgr.Display()
-		m.Display()
+		menu.taskManager.Display()
+		menu.Display()
 
 		_, key, _ := keyboard.GetKey()
 
 		switch key {
 		case keyboard.KeyArrowUp:
-			m.Navigate(-1)
+			menu.Navigate(-1)
 		case keyboard.KeyArrowDown:
-			m.Navigate(1)
+			menu.Navigate(1)
 		case keyboard.KeyEnter:
-			m.HandleSelection()
+			menu.HandleSelection()
 		}
 	}
 }
 
-func (m *Menu) createTask(tm *task.TaskManager) {
+func (menu *Menu) createTask(taskManager *task.TaskManager) {
 	fmt.Print("Введите описание новой задачи: ")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	taskName := scanner.Text()
 
-	tm.Add(taskName)
+	taskManager.Add(taskName)
 }
 
-func (m *Menu) toggleTask(tm *task.TaskManager) {
+func (menu *Menu) editTask(taskManager *task.TaskManager) {
 	fmt.Print("Введите ID задачи: ")
 	var id int
 	fmt.Scanln(&id)
 
-	tm.ToggleState(id)
+	fmt.Print("Введите описание новой задачи: ")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	taskDescription := scanner.Text()
+
+	taskManager.EditTask(id, taskDescription)
 }
 
-func (m *Menu) deleteTask(tm *task.TaskManager) {
+func (menu *Menu) toggleTask(taskManager *task.TaskManager) {
+	fmt.Print("Введите ID задачи: ")
+	var id int
+	fmt.Scanln(&id)
+
+	taskManager.ToggleState(id)
+}
+
+func (menu *Menu) deleteTask(taskManager *task.TaskManager) {
 	fmt.Print("Введите ID задачи для удаления: ")
 	var id int
 	fmt.Scanln(&id)
 
-	tm.Delete(id)
+	taskManager.Delete(id)
+}
+
+func (menu *Menu) deleteAllTask(taskManager *task.TaskManager) {
+	for key := range taskManager.GetTasks() {
+		taskManager.Delete(key)
+	}
 }
