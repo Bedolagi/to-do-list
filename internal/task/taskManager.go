@@ -32,7 +32,7 @@ func (taskManager *TaskManager) EditTask(id int, description string) {
 	taskManager.tasks[id].Description = description
 }
 
-func (taskManager TaskManager) GetTasks() map[int]*Task {
+func (taskManager *TaskManager) GetTasks() map[int]*Task {
 	return taskManager.tasks
 }
 
@@ -62,7 +62,7 @@ func (taskManager *TaskManager) Display() {
 	}
 }
 
-func (taskManager TaskManager) SaveTasks() {
+func (taskManager *TaskManager) SaveTasks() {
 	configPath := storage.InitConfig()
 
 	data, _ := json.Marshal(taskManager.tasks)
